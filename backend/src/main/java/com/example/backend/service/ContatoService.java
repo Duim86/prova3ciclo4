@@ -28,6 +28,8 @@ public class ContatoService {
   public Contato atualizar(Long contatoId, Contato contato) {
     Contato contatoAtual = buscar(contatoId);
     contatoAtual.setNome(contato.getNome());
+    contatoAtual.setTelefone(contato.getTelefone());
+    contatoAtual.setEmail(contato.getEmail());
     return salvar(contatoAtual);
   }
 
