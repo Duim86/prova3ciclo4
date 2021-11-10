@@ -21,8 +21,9 @@ function FormContato() {
         alert('Cadastro realizado com sucesso!');
         navigate('/');
         
-    }).catch(() => {
-        alert('');
+    }).catch((error) => {
+      console.log(error)
+      alert('');
     })
   }
 

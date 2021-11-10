@@ -41,13 +41,14 @@ public class ContatoService {
     return contatoRepository.save(contato);
   }
 
-  @Transactional
   public Contato atualizar(Long contatoId, Contato contato) {
+    validaEmail(contato.getEmail());
+    validaTelefone(contato.getTelefone());
     Contato contatoAtual = buscar(contatoId);
     contatoAtual.setNome(contato.getNome());
     contatoAtual.setTelefone(contato.getTelefone());
     contatoAtual.setEmail(contato.getEmail());
-    return salvar(contatoAtual);
+    return contatoRepository.save(contatoAtual);
   }
 
   public void remover(Long contatoId) {
@@ -63,7 +64,7 @@ public class ContatoService {
 
   public void existsByTelefone(String email) {
     if(contatoRepository.existsByTelefone(email)) {
-      throw new TelefoneConflictException("Email já cadastrado");
+      throw new TelefoneConflictException("Telefone já cadastrado");
     }
   }
 

@@ -21,7 +21,7 @@ function FormEditarContato() {
       setTelefone(res.data.telefone)
       setEmail(res.data.email)
     });
-  }, [contatoId, telefone])
+  }, [contatoId])
 
 
   function onSubmit(e) {

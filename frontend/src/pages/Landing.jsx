@@ -54,7 +54,7 @@ function Landing() {
           </div>
         </div>
         <div className="row">
-          <a id="btn-nova-contato" className="btn btn-primary btn-lg d-block" href="/contato/novo">Novo Contato</a>
+          <a id="btn-novo-contato" className="btn btn-primary btn-lg d-block" href="/contato/novo">Novo Contato</a>
         </div>
       </div>
     </>    
