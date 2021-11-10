@@ -1,5 +1,9 @@
 package com.example.backend.service;
 
+import com.example.backend.exception.EmailConflictException;
+import com.example.backend.exception.EmailInvalidoException;
+import com.example.backend.exception.TelefoneConflictException;
+import com.example.backend.exception.TelefoneInvalidoException;
 import com.example.backend.model.Contato;
 import com.example.backend.repository.ContatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +16,7 @@ import java.util.regex.Pattern;
 @Service
 public class ContatoService {
   private static final Pattern EMAIL_REGEX = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
-  private static final Pattern TELEFONE_REGEX = Pattern.compile("[0-9-]");
+  private static final Pattern TELEFONE_REGEX = Pattern.compile("[0-9-]*");
 
   @Autowired
   private ContatoRepository contatoRepository;
@@ -30,8 +34,9 @@ public class ContatoService {
   public Contato salvar(Contato contato) {
     validaEmail(contato.getEmail());
     validaTelefone(contato.getTelefone());
-    existsByEmail(contato.getEmail());
     existsByTelefone(contato.getTelefone());
+    existsByEmail(contato.getEmail());
+
 
     return contatoRepository.save(contato);
   }
@@ -52,25 +57,25 @@ public class ContatoService {
 
   public void existsByEmail(String email) {
     if(contatoRepository.existsByEmail(email)) {
-      throw new IllegalStateException("Email já cadastrado");
+      throw new EmailConflictException("Email já cadastrado");
     }
   }
 
   public void existsByTelefone(String email) {
     if(contatoRepository.existsByTelefone(email)) {
-      throw new IllegalStateException("Email já cadastrado");
+      throw new TelefoneConflictException("Email já cadastrado");
     }
   }
 
   public void validaEmail(String email) {
     if(!EMAIL_REGEX.matcher(email).matches()) {
-      throw new IllegalStateException("Email inválido");
+      throw new EmailInvalidoException("Email inválido");
     }
   }
 
   public void validaTelefone(String telefone) {
-    if(!TELEFONE_REGEX.matcher(telefone).matches()) {
-      throw new IllegalStateException("Telefone inválido");
+    if(!telefone.matches(String.valueOf(TELEFONE_REGEX))){
+      throw new TelefoneInvalidoException("Telefone inválido");
     }
   }
 }
