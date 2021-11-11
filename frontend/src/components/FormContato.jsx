@@ -22,8 +22,7 @@ function FormContato() {
         navigate('/');
         
     }).catch((error) => {
-      console.log(error.response)
-      alert('');
+      alert(error.response.data.message);
     })
   }
 
