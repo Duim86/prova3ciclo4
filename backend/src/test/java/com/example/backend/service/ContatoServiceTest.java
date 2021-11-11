@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +28,12 @@ class ContatoServiceTest {
     var contato = new Contato();
     contato.setEmail("aaaa.aaa");
 
-    assertThrows(RegistroInvalidoException.class, () -> contatoService.salvar(contato));
+    RegistroInvalidoException thrown = assertThrows(
+            RegistroInvalidoException.class,
+            () -> contatoService.salvar(contato)
+    );
+
+    assertEquals("Email inválido",thrown.getMessage());
   }
 
   @Test
@@ -36,7 +42,12 @@ class ContatoServiceTest {
     contato.setEmail("aaaa@aaa.com");
     contato.setTelefone("45-aa4585-");
 
-    assertThrows(RegistroInvalidoException.class, () -> contatoService.salvar(contato));
+    RegistroInvalidoException thrown = assertThrows(
+            RegistroInvalidoException.class,
+            () -> contatoService.salvar(contato)
+    );
+
+    assertEquals("Telefone inválido",thrown.getMessage());
   }
 
   @Test
@@ -46,7 +57,12 @@ class ContatoServiceTest {
     contato.setTelefone("4545454545");
 
     Mockito.when(contatoRepository.existsByTelefone(contato.getTelefone())).thenReturn(true);
-    assertThrows(EntidadeEmUsoException.class, () -> contatoService.salvar(contato));
+    EntidadeEmUsoException thrown = assertThrows(
+            EntidadeEmUsoException.class,
+            () -> contatoService.salvar(contato)
+    );
+
+    assertEquals("Telefone já cadastrado",thrown.getMessage());
   }
 
   @Test
@@ -57,6 +73,12 @@ class ContatoServiceTest {
 
     Mockito.when(contatoRepository.existsByTelefone(contato.getTelefone())).thenReturn(false);
     Mockito.when(contatoRepository.existsByEmail(contato.getEmail())).thenReturn(true);
-    assertThrows(EntidadeEmUsoException.class, () -> contatoService.salvar(contato));
+
+    EntidadeEmUsoException thrown = assertThrows(
+            EntidadeEmUsoException.class,
+            () -> contatoService.salvar(contato)
+    );
+
+    assertEquals("Email já cadastrado",thrown.getMessage());
   }
 }
