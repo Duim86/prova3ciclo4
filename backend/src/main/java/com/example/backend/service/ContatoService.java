@@ -1,9 +1,7 @@
 package com.example.backend.service;
 
-import com.example.backend.exception.EmailConflictException;
-import com.example.backend.exception.EmailInvalidoException;
-import com.example.backend.exception.TelefoneConflictException;
-import com.example.backend.exception.TelefoneInvalidoException;
+import com.example.backend.exception.RegistroInvalidoException;
+import com.example.backend.exception.EntidadeEmUsoException;
 import com.example.backend.model.Contato;
 import com.example.backend.repository.ContatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,25 +56,25 @@ public class ContatoService {
 
   public void existsByEmail(String email) {
     if(contatoRepository.existsByEmail(email)) {
-      throw new EmailConflictException("Email já cadastrado");
+      throw new EntidadeEmUsoException("Email já cadastrado");
     }
   }
 
   public void existsByTelefone(String email) {
     if(contatoRepository.existsByTelefone(email)) {
-      throw new TelefoneConflictException("Telefone já cadastrado");
+      throw new EntidadeEmUsoException("Telefone já cadastrado");
     }
   }
 
   public void validaEmail(String email) {
     if(!EMAIL_REGEX.matcher(email).matches()) {
-      throw new EmailInvalidoException("Email inválido");
+      throw new RegistroInvalidoException("Email inválido");
     }
   }
 
   public void validaTelefone(String telefone) {
     if(!telefone.matches(String.valueOf(TELEFONE_REGEX))){
-      throw new TelefoneInvalidoException("Telefone inválido");
+      throw new RegistroInvalidoException("Telefone inválido");
     }
   }
 }

@@ -1,6 +1,6 @@
 import {useState, useEffect } from "react"
 import Header from "../components/Header"
-import api from "axios"
+import api from "../services/api"
 
 function Landing() {
   const [contatos, setContatos] = useState([])

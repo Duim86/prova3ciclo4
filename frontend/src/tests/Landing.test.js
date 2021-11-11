@@ -2,7 +2,8 @@ import {render, screen} from '@testing-library/react'
 import '@testing-library/jest-dom'
 import Landing from '../pages/Landing'
 import { act } from 'react-dom/test-utils'
-import axios from 'axios'
+import api from '../services/api'
+ 
 
 describe('Landing', () => {
   test('should get contacts on loading page', async () => {
@@ -18,7 +19,7 @@ describe('Landing', () => {
       email: "gabigol@flamengo.com",
       telefone: "41-5555565"
     }];
-    const axiosGetSpy = jest.spyOn(axios, 'get').mockResolvedValueOnce({ data });
+    const axiosGetSpy = jest.spyOn(api, 'get').mockResolvedValueOnce({ data });
     await act(async () => {
       render(<Landing />);
     });

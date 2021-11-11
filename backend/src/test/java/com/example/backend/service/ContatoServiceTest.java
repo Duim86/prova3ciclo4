@@ -1,9 +1,7 @@
 package com.example.backend.service;
 
-import com.example.backend.exception.EmailConflictException;
-import com.example.backend.exception.EmailInvalidoException;
-import com.example.backend.exception.TelefoneConflictException;
-import com.example.backend.exception.TelefoneInvalidoException;
+import com.example.backend.exception.EntidadeEmUsoException;
+import com.example.backend.exception.RegistroInvalidoException;
 import com.example.backend.model.Contato;
 import com.example.backend.repository.ContatoRepository;
 import org.junit.jupiter.api.Test;
@@ -29,15 +27,16 @@ class ContatoServiceTest {
     var contato = new Contato();
     contato.setEmail("aaaa.aaa");
 
-    assertThrows(EmailInvalidoException.class, () -> contatoService.salvar(contato));
+    assertThrows(RegistroInvalidoException.class, () -> contatoService.salvar(contato));
   }
 
   @Test
   void deveFalharAoTentarCadastrarUmTelefoneInvalido() {
     var contato = new Contato();
+    contato.setEmail("aaaa@aaa.com");
     contato.setTelefone("45-aa4585-");
 
-    assertThrows(TelefoneInvalidoException.class, () -> contatoService.salvar(contato));
+    assertThrows(RegistroInvalidoException.class, () -> contatoService.salvar(contato));
   }
 
   @Test
@@ -47,7 +46,7 @@ class ContatoServiceTest {
     contato.setTelefone("4545454545");
 
     Mockito.when(contatoRepository.existsByTelefone(contato.getTelefone())).thenReturn(true);
-    assertThrows(TelefoneConflictException.class, () -> contatoService.salvar(contato));
+    assertThrows(EntidadeEmUsoException.class, () -> contatoService.salvar(contato));
   }
 
   @Test
@@ -58,6 +57,6 @@ class ContatoServiceTest {
 
     Mockito.when(contatoRepository.existsByTelefone(contato.getTelefone())).thenReturn(false);
     Mockito.when(contatoRepository.existsByEmail(contato.getEmail())).thenReturn(true);
-    assertThrows(EmailConflictException.class, () -> contatoService.salvar(contato));
+    assertThrows(EntidadeEmUsoException.class, () -> contatoService.salvar(contato));
   }
 }

@@ -1,16 +1,13 @@
 package com.example.backend.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-public class TelefoneConflictException extends RuntimeException{
+public class EntidadeEmUsoException extends RuntimeException{
   private static final long serialVersionUID = 1L;
 
-  public TelefoneConflictException(String mensagem) {
+  public EntidadeEmUsoException(String mensagem) {
     super(mensagem);
   }
 
-  public TelefoneConflictException(String mensagem, Throwable causa) {
+  public EntidadeEmUsoException(String mensagem, Throwable causa) {
     super(mensagem, causa);
   }
 }
