@@ -1,23 +1,24 @@
 import {useState, useEffect } from "react"
 import Header from "../components/Header"
-import api from "../services/api"
+import api from "axios"
 
 function Landing() {
   const [contatos, setContatos] = useState([])
 
   useEffect(() => {
-    api.get('/contato').then(res => setContatos(res.data));
+    api.get('/contato')
+        .then(res => setContatos(res.data));
   }, [])
 
-  function removerContato(contatoId) {
-    api.delete(`/contato/${contatoId}`).then(() => {
-      alert('Registro removido com sucesso!');
-      window.location.reload()
+  // function removerContato(contatoId) {
+  //   api.delete(`/contato/${contatoId}`).then(() => {
+  //     alert('Registro removido com sucesso!');
+  //     window.location.reload()
       
-    }).catch(() => {
-        alert('Erro ao remover!');
-    })
-  }
+  //   }).catch(() => {
+  //       alert('Erro ao remover!');
+  //   })
+  // }
 
   return (
     <>
@@ -44,8 +45,8 @@ function Landing() {
                     <td id={`nome-${contato.id}`} className="col-4">{contato.nome}</td>
                     <td id={`email-${contato.id}`} className="col-2">{contato.email}</td>
                     <td id={`detalhes-${contato.id}`} className="col-1"><a className="btn btn-success" href={`/contato/detalhes/${contato.id}`}>Detalhes</a></td>
-                    <td id={`editar-${contato.id}`} className="col-1"><a className="btn btn-secondary" href={`/contato/editar/${contato.id}`}>Editar</a></td>
-                    <td id={`remover-${contato.id}`} className="col-1"><button className="btn btn-danger" onClick={(e) => removerContato(contato.id)}>Deletar</button></td>
+                    {/* <td id={`editar-${contato.id}`} className="col-1"><a className="btn btn-secondary" href={`/contato/editar/${contato.id}`}>Editar</a></td>
+                    <td id={`remover-${contato.id}`} className="col-1"><button className="btn btn-danger" onClick={(e) => removerContato(contato.id)}>Deletar</button></td> */}
                   </tr>
                 )                  
                 })}
@@ -54,7 +55,7 @@ function Landing() {
           </div>
         </div>
         <div className="row">
-          <a id="btn-novo-contato" className="btn btn-primary btn-lg d-block" href="/contato/novo">Novo Contato</a>
+          <a testid="btn-novo-contato"  id="btn-novo-contato" className="btn btn-primary btn-lg d-block" href="/contato/novo">Novo Contato</a>
         </div>
       </div>
     </>    
