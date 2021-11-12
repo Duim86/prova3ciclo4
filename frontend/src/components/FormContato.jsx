@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useParams } from "react-router";
 import { useNavigate } from 'react-router-dom';
 
 import api from "../services/api"
@@ -8,22 +9,49 @@ function FormContato() {
   const [nome, setNome] = useState("")
   const [telefone, setTelefone] = useState("")
   const [email, setEmail] = useState("")
+
+  const params = useParams();
   const navigate = useNavigate();
+
+  const contatoId = params.id === undefined ? null : params.id;
+
+  useEffect(() => {
+    api.get(`/contato/${contatoId}`).then(res => {
+      setNome(res.data.nome)
+      setTelefone(res.data.telefone)
+      setEmail(res.data.email)
+    });
+  }, [contatoId])
+
 
   function onSubmit(e) {
     e.preventDefault();
-
-    api.post('/contato', {
-      nome,
-      telefone,
-      email
-    } ).then(() => {
-        alert('Cadastro realizado com sucesso!');
-        navigate('/');
-        
-    }).catch((error) => {
-      alert(error.response.data.message);
-    })
+    if(contatoId !== null) {
+      api.put(`/contato/${contatoId}`, {
+        contatoId,
+        nome,
+        telefone,
+        email
+      } ).then(() => {
+          alert('Cadastro atualizado com sucesso!');
+          navigate('/');
+          
+      }).catch((e) => {
+          alert(e.response.data.message);
+      })
+    } else {
+      api.post('/contato', {
+        nome,
+        telefone,
+        email
+      } ).then(() => {
+          alert('Cadastro realizado com sucesso!');
+          navigate('/');
+          
+      }).catch((error) => {
+        alert(error.response.data.message);
+      })
+    }
   }
 
   return (
@@ -73,6 +101,4 @@ function FormContato() {
   )
 }
 
-export default FormContato
-
-
+export default FormContato;

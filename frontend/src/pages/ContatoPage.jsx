@@ -2,7 +2,7 @@ import FormContato from "../components/FormContato"
 import Header from "../components/Header"
 
 
-function NovoContato() {
+function ContatoPage() {
   return (
     <>
       <Header />
@@ -11,4 +11,4 @@ function NovoContato() {
   )
 }
 
-export default NovoContato
+export default ContatoPage

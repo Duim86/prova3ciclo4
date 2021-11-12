@@ -110,6 +110,49 @@ class MainPageTest {
     Assertions.assertEquals(expectedMessage, actualMessage);
   }
 
+  @Test
+  void deveAtualizarUmCadastroComSucesso() {
+    deveCadastrarUmContato("Pedro", "41-1010101010", "pedro@flamengo.com");
+
+    var id = $(byText("Pedro")).getAttribute("id");
+    var str = Objects.requireNonNull(id).replaceAll("\\D+","");
+    $("[id=editar-"+str+"]").click();
+
+    $("[name='telefone']").clear();
+    $("[name='telefone']").sendKeys("41-20202020");
+    $("[name='email']").clear();
+    $("[name='email']").sendKeys("pedro@flamengo.com");
+    $("[id='btn-cadastrar']").click();
+
+    Alert alert = Selenide.switchTo().alert();
+    String actualMessage = alert.getText();
+    String expectedMessage =  "Cadastro atualizado com sucesso!";
+
+    Assertions.assertEquals(expectedMessage, actualMessage);
+  }
+
+  @Test
+  void deveFalharAoCadastrarUmEmailJaExistente() {
+    deveCadastrarUmContato("Pedro", "41-1313131313", "pedrogol@flamengo.com");
+    deveCadastrarUmContato("Pedro", "41-1010101010", "pedro@flamengo.com");
+
+    var id = $(byText("Pedro")).getAttribute("id");
+    var str = Objects.requireNonNull(id).replaceAll("\\D+","");
+    $("[id=editar-"+str+"]").click();
+
+    $("[name='telefone']").clear();
+    $("[name='telefone']").sendKeys("41-20202020");
+    $("[name='email']").clear();
+    $("[name='email']").sendKeys("pedrogol@flamengo.com");
+    $("[id='btn-cadastrar']").click();
+
+    Alert alert = Selenide.switchTo().alert();
+    String actualMessage = alert.getText();
+    String expectedMessage =  "Cadastro atualizado com sucesso!";
+
+    Assertions.assertEquals(expectedMessage, actualMessage);
+  }
+
   void deveCadastrarUmContato(String nome, String telefone, String email) {
     $("[id='btn-novo-contato']").click();
     $("[name='nome']").sendKeys(nome);
