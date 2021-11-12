@@ -1,4 +1,4 @@
-package com.prova.prova34;
+package com.example.selenium;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
@@ -114,7 +114,7 @@ class MainPageTest {
   void deveAtualizarUmCadastroComSucesso() {
     deveCadastrarUmContato("Pedro", "41-1010101010", "pedro@flamengo.com");
 
-    var id = $(byText("Pedro")).getAttribute("id");
+    var id = $(byText("pedro@flamengo.com")).getAttribute("id");
     var str = Objects.requireNonNull(id).replaceAll("\\D+","");
     $("[id=editar-"+str+"]").click();
 
@@ -134,9 +134,9 @@ class MainPageTest {
   @Test
   void deveFalharAoCadastrarUmEmailJaExistente() {
     deveCadastrarUmContato("Pedro", "41-1313131313", "pedrogol@flamengo.com");
-    deveCadastrarUmContato("Pedro", "41-1010101010", "pedro@flamengo.com");
+    deveCadastrarUmContato("Pedro", "41-0000000000", "pedro9@flamengo.com");
 
-    var id = $(byText("Pedro")).getAttribute("id");
+    var id = $(byText("pedro9@flamengo.com")).getAttribute("id");
     var str = Objects.requireNonNull(id).replaceAll("\\D+","");
     $("[id=editar-"+str+"]").click();
 
@@ -148,7 +148,7 @@ class MainPageTest {
 
     Alert alert = Selenide.switchTo().alert();
     String actualMessage = alert.getText();
-    String expectedMessage =  "Cadastro atualizado com sucesso!";
+    String expectedMessage =  "Email já cadastrado";
 
     Assertions.assertEquals(expectedMessage, actualMessage);
   }
