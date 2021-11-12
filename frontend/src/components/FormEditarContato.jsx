@@ -36,8 +36,8 @@ function FormEditarContato() {
         alert('Cadastro atualizado com sucesso!');
         navigate('/');
         
-    }).catch(() => {
-        alert('');
+    }).catch((e) => {
+        alert(e.response.data.message);
     })
 
   }

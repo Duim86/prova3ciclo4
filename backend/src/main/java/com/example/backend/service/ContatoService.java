@@ -43,6 +43,12 @@ public class ContatoService {
     validaEmail(contato.getEmail());
     validaTelefone(contato.getTelefone());
     Contato contatoAtual = buscar(contatoId);
+    if(!contatoAtual.getEmail().equals(contato.getEmail())) {
+      existsByEmail(contato.getEmail());
+    }
+    if(!contatoAtual.getTelefone().equals(contato.getTelefone())) {
+      existsByTelefone(contato.getTelefone());
+    }
     contatoAtual.setNome(contato.getNome());
     contatoAtual.setTelefone(contato.getTelefone());
     contatoAtual.setEmail(contato.getEmail());
